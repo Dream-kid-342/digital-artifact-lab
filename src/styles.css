@@ -5,9 +5,10 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Design system: professional developer portfolio.
- * Light editorial surfaces + deep navy sections, muted blue accent.
- * All colors are oklch tokens. Never hardcode colors in components.
+ * Design system: Realistic Dark Theme
+ * Background: Deep Oceanic Navy Blue
+ * Accents: Electric Cyber Neon Green & Cyan
+ * High-fidelity glassmorphism, specular rims, and realistic soft ambient glows.
  */
 
 @theme inline {
@@ -50,41 +51,51 @@
   --color-ink-muted: var(--ink-muted);
   --color-ink-border: var(--ink-border);
   --color-cyan-accent: var(--cyan-accent);
+  --color-neon: var(--neon);
 
-  --shadow-card: 0 1px 2px oklch(0.22 0.035 258 / 0.06), 0 12px 32px -18px oklch(0.22 0.035 258 / 0.28);
-  --shadow-lift: 0 2px 4px oklch(0.22 0.035 258 / 0.07), 0 26px 50px -24px oklch(0.22 0.035 258 / 0.35);
+  --shadow-card: 0 4px 20px -2px oklch(0.04 0.02 255 / 0.65), 0 0 0 1px oklch(1 0 0 / 0.06);
+  --shadow-lift: 0 14px 40px -6px oklch(0.03 0.02 255 / 0.8), 0 0 28px -4px oklch(0.86 0.22 145 / 0.28);
+  --shadow-neon: 0 0 24px -2px oklch(0.86 0.22 145 / 0.45);
+  --shadow-neon-sm: 0 0 12px -1px oklch(0.86 0.22 145 / 0.35);
 }
 
 :root {
   --radius: 0.5rem;
-  --background: oklch(0.986 0.003 250);
-  --foreground: oklch(0.24 0.032 258);
-  --surface: oklch(0.962 0.005 250);
-  --surface-foreground: oklch(0.24 0.032 258);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.24 0.032 258);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.24 0.032 258);
-  --primary: oklch(0.52 0.115 253);
-  --primary-foreground: oklch(0.99 0.002 250);
-  --secondary: oklch(0.945 0.008 250);
-  --secondary-foreground: oklch(0.3 0.03 258);
-  --muted: oklch(0.955 0.006 250);
-  --muted-foreground: oklch(0.53 0.02 256);
-  --accent: oklch(0.93 0.024 245);
-  --accent-foreground: oklch(0.32 0.06 253);
-  --destructive: oklch(0.55 0.19 25);
-  --destructive-foreground: oklch(0.99 0.002 250);
-  --border: oklch(0.9 0.008 250);
-  --input: oklch(0.89 0.01 250);
-  --ring: oklch(0.52 0.115 253);
+  /* Deep oceanic midnight navy */
+  --background: oklch(0.125 0.038 252);
+  --foreground: oklch(0.965 0.012 250);
+  --surface: oklch(0.155 0.042 252);
+  --surface-foreground: oklch(0.94 0.015 250);
+  --card: oklch(0.178 0.046 252);
+  --card-foreground: oklch(0.965 0.012 250);
+  --popover: oklch(0.165 0.044 252);
+  --popover-foreground: oklch(0.965 0.012 250);
 
-  --ink: oklch(0.235 0.034 258);
-  --ink-soft: oklch(0.28 0.034 258);
-  --ink-foreground: oklch(0.97 0.005 250);
-  --ink-muted: oklch(0.76 0.018 250);
-  --ink-border: oklch(1 0 0 / 12%);
-  --cyan-accent: oklch(0.72 0.09 215);
+  /* Electric cyber neon green */
+  --primary: oklch(0.86 0.22 145);
+  --primary-foreground: oklch(0.11 0.04 252);
+  --neon: oklch(0.86 0.22 145);
+
+  --secondary: oklch(0.20 0.045 252);
+  --secondary-foreground: oklch(0.92 0.02 245);
+  --muted: oklch(0.185 0.036 252);
+  --muted-foreground: oklch(0.70 0.025 245);
+  --accent: oklch(0.22 0.055 148 / 0.45);
+  --accent-foreground: oklch(0.90 0.20 145);
+  --destructive: oklch(0.62 0.22 25);
+  --destructive-foreground: oklch(0.99 0.002 250);
+
+  --border: oklch(0.28 0.045 252 / 0.75);
+  --input: oklch(0.29 0.045 252 / 0.85);
+  --ring: oklch(0.86 0.22 145);
+
+  /* Abyssal deep navy sections with neon trim */
+  --ink: oklch(0.095 0.032 255);
+  --ink-soft: oklch(0.135 0.038 255);
+  --ink-foreground: oklch(0.97 0.008 250);
+  --ink-muted: oklch(0.66 0.022 245);
+  --ink-border: oklch(0.86 0.22 145 / 0.18);
+  --cyan-accent: oklch(0.78 0.16 195);
 }
 
 @layer base {
@@ -94,6 +105,7 @@
 
   html {
     scroll-behavior: smooth;
+    color-scheme: dark;
   }
 
   body {
@@ -101,6 +113,10 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, oklch(0.86 0.22 145 / 0.06), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 60%, oklch(0.78 0.16 195 / 0.04), transparent);
+    background-attachment: fixed;
   }
 
   h1,
@@ -114,12 +130,13 @@
   :focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
-    border-radius: 2px;
+    border-radius: 4px;
+    box-shadow: 0 0 12px oklch(0.86 0.22 145 / 0.4);
   }
 
   ::selection {
-    background: var(--color-accent);
-    color: var(--color-accent-foreground);
+    background: oklch(0.86 0.22 145 / 0.35);
+    color: #ffffff;
   }
 }
 
@@ -131,35 +148,56 @@
   text-transform: uppercase;
 }
 
-/* Faint grid backdrop for hero / dark sections */
+/* Realistic cyber navy grid backdrop */
 @utility bg-grid {
   background-image:
-    linear-gradient(to right, oklch(0.52 0.115 253 / 0.07) 1px, transparent 1px),
-    linear-gradient(to bottom, oklch(0.52 0.115 253 / 0.07) 1px, transparent 1px);
-  background-size: 64px 64px;
+    linear-gradient(to right, oklch(0.86 0.22 145 / 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(0.86 0.22 145 / 0.07) 1px, transparent 1px);
+  background-size: 56px 56px;
 }
 
 @utility bg-grid-ink {
   background-image:
-    linear-gradient(to right, oklch(1 0 0 / 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, oklch(1 0 0 / 0.05) 1px, transparent 1px);
-  background-size: 64px 64px;
+    linear-gradient(to right, oklch(0.86 0.22 145 / 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(0.86 0.22 145 / 0.08) 1px, transparent 1px);
+  background-size: 48px 48px;
 }
 
-/* Soft radial glow, used sparingly behind headings */
+/* Realistic radial neon glow */
 @utility bg-radial-soft {
   background-image: radial-gradient(
-    60% 60% at 50% 0%,
-    oklch(0.52 0.115 253 / 0.1) 0%,
-    transparent 70%
+    65% 65% at 50% 0%,
+    oklch(0.86 0.22 145 / 0.12) 0%,
+    oklch(0.78 0.16 195 / 0.04) 50%,
+    transparent 80%
   );
+}
+
+/* Glassmorphic realistic card overlay */
+@utility glass-panel {
+  background-color: oklch(0.178 0.046 252 / 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid oklch(0.32 0.05 252 / 0.6);
+  box-shadow: 0 4px 24px -2px oklch(0.04 0.02 255 / 0.7), inset 0 1px 0 0 oklch(1 0 0 / 0.08);
+}
+
+@utility glass-panel-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@utility neon-glow {
+  box-shadow: 0 0 20px -2px oklch(0.86 0.22 145 / 0.5);
+}
+
+@utility neon-text-glow {
+  text-shadow: 0 0 16px oklch(0.86 0.22 145 / 0.6);
 }
 
 @utility placeholder-frame {
   background-image: repeating-linear-gradient(
     135deg,
-    oklch(0.52 0.115 253 / 0.06) 0px,
-    oklch(0.52 0.115 253 / 0.06) 10px,
+    oklch(0.86 0.22 145 / 0.06) 0px,
+    oklch(0.86 0.22 145 / 0.06) 10px,
     transparent 10px,
     transparent 20px
   );

@@ -1315,24 +1315,15 @@ First establish:
 Then implement the website cleanly.
 
 The final result should look like a **real software developer's professional portfolio**, with the projects being the centerpiece of the site and the design supporting the developer's credibility rather than distracting from it.
-
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/36761e4d-0a17-4e74-be0d-fd0cb8ac4e28).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
 ## Development
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+To run this project locally:
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+git clone https://github.com/mitchel/digital-artifact-lab.git
+cd digital-artifact-lab
+npm install
 npm run dev
 ```
+
+© 2026 Mitch. All rights reserved.

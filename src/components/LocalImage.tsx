@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ImageOff } from "lucide-react";
+import { Sparkles, Code2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type LocalImageProps = {
@@ -7,14 +7,13 @@ type LocalImageProps = {
   alt: string;
   className?: string;
   imgClassName?: string;
-  /** Shown inside the placeholder so the file to add is obvious. */
+  /** Aspect ratio class, e.g. aspect-[16/10] or aspect-[4/5] */
   ratio?: string;
   loading?: "lazy" | "eager";
 };
 
 /**
- * Renders a local image, and — until the file exists — a clearly marked
- * placeholder naming the path where the real asset should be dropped in.
+ * High-fidelity local image component with elegant dark navy & neon green fallback placeholder.
  */
 export function LocalImage({
   src,
@@ -29,18 +28,29 @@ export function LocalImage({
   return (
     <div
       className={cn(
-        "relative w-full overflow-hidden rounded-lg border border-border bg-surface",
+        "relative w-full overflow-hidden rounded-lg border border-border/80 bg-card/80",
         ratio,
         className,
       )}
     >
       {failed ? (
-        <div className="placeholder-frame absolute inset-0 flex flex-col items-center justify-center gap-2 p-4 text-center">
-          <ImageOff aria-hidden className="size-5 text-muted-foreground" />
-          <p className="text-xs font-semibold text-foreground">Image placeholder</p>
-          <code className="max-w-full truncate font-mono text-[11px] text-muted-foreground">
-            public{src}
-          </code>
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-card via-surface to-background p-6 text-center">
+          <div className="relative flex size-12 items-center justify-center rounded-xl border border-primary/40 bg-primary/10 text-primary shadow-[0_0_16px_oklch(0.86_0.22_145/0.25)]">
+            <Code2 className="size-6" />
+            <span className="absolute -top-1 -right-1 flex size-2.5">
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-primary opacity-75" />
+              <span className="relative inline-flex size-2.5 rounded-full bg-primary" />
+            </span>
+          </div>
+
+          <div>
+            <p className="font-display text-sm font-bold tracking-tight text-foreground flex items-center justify-center gap-1.5">
+              <Sparkles className="size-3.5 text-primary" /> Visual Asset
+            </p>
+            <p className="mt-1 font-mono text-xs text-muted-foreground break-all">
+              {src.replace(/^\//, "")}
+            </p>
+          </div>
         </div>
       ) : (
         <img

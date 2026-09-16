@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { profile } from "@/data/portfolio";
+import { GithubIcon, LinkedinIcon } from "@/components/ContactForm";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -74,13 +75,33 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          <a
+            href={profile.github}
+            target="_blank"
+            rel="noreferrer noopener"
+            aria-label="GitHub Profile"
+            className="hidden size-9 items-center justify-center rounded-lg border border-border/80 bg-card/60 text-muted-foreground transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/50 hover:bg-card hover:text-primary hover:shadow-[0_0_12px_oklch(0.86_0.22_145/0.25)] sm:inline-flex"
+          >
+            <GithubIcon className="size-4" />
+          </a>
+
+          <a
+            href={profile.linkedin}
+            target="_blank"
+            rel="noreferrer noopener"
+            aria-label="LinkedIn Profile"
+            className="hidden size-9 items-center justify-center rounded-lg border border-border/80 bg-card/60 text-muted-foreground transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/50 hover:bg-card hover:text-primary hover:shadow-[0_0_12px_oklch(0.86_0.22_145/0.25)] sm:inline-flex"
+          >
+            <LinkedinIcon className="size-4" />
+          </a>
+
           <Link
             to="/contact"
-            className="hidden h-10 items-center gap-2 rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground transition-all duration-200 hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-lift sm:inline-flex"
+            className="hidden h-9 items-center gap-1.5 rounded-lg bg-primary px-3.5 text-xs font-semibold text-primary-foreground shadow-neon-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-neon sm:inline-flex"
           >
             Let&apos;s Talk
-            <ArrowRight aria-hidden className="size-4 transition-transform group-hover:translate-x-0.5" />
+            <ArrowRight aria-hidden className="size-3.5 transition-transform group-hover:translate-x-0.5" />
           </Link>
 
           <button
@@ -89,7 +110,7 @@ export function SiteHeader() {
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "Close menu" : "Open menu"}
-            className="inline-flex size-10 items-center justify-center rounded-md border border-border bg-card text-foreground lg:hidden"
+            className="inline-flex size-9 items-center justify-center rounded-lg border border-border/80 bg-card/80 text-foreground lg:hidden"
           >
             {open ? <X aria-hidden className="size-5" /> : <Menu aria-hidden className="size-5" />}
           </button>

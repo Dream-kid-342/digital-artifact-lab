@@ -6,6 +6,7 @@ import { SectionHeading } from "@/components/PageHeader";
 import { ProjectCard } from "@/components/ProjectCard";
 import { SkillGrid } from "@/components/SkillGrid";
 import { ButtonLink } from "@/components/Button";
+import { ContactForm } from "@/components/ContactForm";
 import { about, projects, profile } from "@/data/portfolio";
 
 const title = "Mitchel Ndinda Martin — Software Developer, Nairobi";
@@ -100,21 +101,23 @@ function Index() {
         </div>
       </section>
 
-      {/* Contact CTA */}
-      <section className="border-t border-border bg-surface">
-        <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-5 py-14 sm:px-8 md:flex-row md:items-center md:justify-between">
+      {/* Contact Section */}
+      <section id="contact" className="border-t border-border bg-surface/60 py-16 sm:py-24">
+        <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <Reveal>
-            <h2 className="text-2xl font-bold sm:text-3xl">Let&apos;s build something useful.</h2>
-            <p className="mt-3 max-w-xl text-sm text-muted-foreground">
-              Open to internships, collaborations and project work. Based in{" "}
-              {profile.location}.
-            </p>
+            <div className="mb-12">
+              <p className="label-eyebrow text-primary">Get In Touch</p>
+              <h2 className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                Let&apos;s build something exceptional.
+              </h2>
+              <p className="mt-3 max-w-2xl text-base text-muted-foreground">
+                Whether you need a full-stack web application, backend architecture, or want to discuss an opportunity, I&apos;m always ready to collaborate.
+              </p>
+            </div>
           </Reveal>
-          <Reveal delay={0.08}>
-            <ButtonLink to="/contact">
-              Get in Touch
-              <ArrowRight aria-hidden className="size-4 transition-transform group-hover:translate-x-1" />
-            </ButtonLink>
+
+          <Reveal delay={0.1}>
+            <ContactForm />
           </Reveal>
         </div>
       </section>

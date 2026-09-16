@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { GraduationCap, MapPin, Mail } from "lucide-react";
+import { GraduationCap, MapPin, Mail, Phone } from "lucide-react";
 import { PageHeader, SectionHeading } from "@/components/PageHeader";
 import { Reveal } from "@/components/Reveal";
 import { about, profile } from "@/data/portfolio";
+import { GithubIcon, LinkedinIcon } from "@/components/ContactForm";
 
 const title = "About — Mitchel Ndinda Martin";
 const description =
@@ -51,8 +52,33 @@ function AboutPage() {
                 {profile.location}
               </Fact>
               <Fact icon={<Mail aria-hidden className="size-4" />} label="Email">
-                <a className="text-primary hover:underline" href={`mailto:${profile.email}`}>
+                <a className="text-primary hover:underline font-mono" href={`mailto:${profile.email}`}>
                   {profile.email}
+                </a>
+              </Fact>
+              <Fact icon={<Phone aria-hidden className="size-4" />} label="Phone">
+                <a className="text-primary hover:underline font-mono" href={`tel:${profile.phoneHref}`}>
+                  {profile.phoneFormatted || profile.phone}
+                </a>
+              </Fact>
+              <Fact icon={<GithubIcon className="size-4" />} label="GitHub">
+                <a
+                  className="text-primary hover:underline font-mono"
+                  href={profile.github}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  github.com/mitchel
+                </a>
+              </Fact>
+              <Fact icon={<LinkedinIcon className="size-4" />} label="LinkedIn">
+                <a
+                  className="text-primary hover:underline font-mono"
+                  href={profile.linkedin}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  linkedin/mitchel-martin
                 </a>
               </Fact>
             </dl>

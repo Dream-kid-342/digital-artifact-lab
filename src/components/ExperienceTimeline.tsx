@@ -9,7 +9,7 @@ export function ExperienceTimeline() {
         <Reveal as="li" key={job.role + job.period} delay={i * 0.08} className="relative">
           <span
             aria-hidden
-            className="absolute top-2 -left-[1.9rem] size-3 rounded-full border-2 border-primary bg-background sm:-left-[2.4rem]"
+            className="absolute top-2 -left-[1.9rem] size-3 rounded-full border-2 border-primary bg-background shadow-[0_0_10px_oklch(0.86_0.22_145/0.9)] sm:-left-[2.4rem]"
           />
           <div className="rounded-xl border border-border bg-card p-5 shadow-card sm:p-7">
             <p className="label-eyebrow text-primary">{job.period}</p>
