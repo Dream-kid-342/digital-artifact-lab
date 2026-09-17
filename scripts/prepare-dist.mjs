@@ -1,18 +1,20 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { spawn } from 'node:child_process';
 
 const rootDir = process.cwd();
 const outputPublicDir = path.join(rootDir, '.output', 'public');
+const serverEntry = path.join(rootDir, '.output', 'server', 'index.mjs');
 const distDir = path.join(rootDir, 'dist');
 
-console.log('--- Preparing dist directory for Render Static Site ---');
+console.log('--- Preparing dist directory for Render Deployment ---');
 
-// Ensure dist directory exists
+// 1. Ensure dist directory exists
 if (!fs.existsSync(distDir)) {
   fs.mkdirSync(distDir, { recursive: true });
 }
 
-// Copy everything from .output/public to dist if it exists
+// 2. Copy static assets from .output/public or public/ to dist/
 if (fs.existsSync(outputPublicDir)) {
   fs.cpSync(outputPublicDir, distDir, { recursive: true });
   console.log('✓ Copied .output/public files to dist/');
@@ -21,53 +23,126 @@ if (fs.existsSync(outputPublicDir)) {
   console.log('✓ Copied public/ files to dist/');
 }
 
-// Ensure _redirects file exists for SPA routing on Render Static Site
+// 3. Ensure _redirects file exists for SPA routing on Render Static Sites & Netlify
 const redirectsPath = path.join(distDir, '_redirects');
 fs.writeFileSync(redirectsPath, '/* /index.html 200\n', 'utf8');
-console.log('✓ Created dist/_redirects for SPA client routing');
+console.log('✓ Created dist/_redirects for SPA routing');
 
-// If index.html doesn't exist in dist, create a clean static bootstrapper
-const indexPath = path.join(distDir, 'index.html');
-if (!fs.existsSync(indexPath)) {
-  // Find the primary entry js and css from dist/assets
-  const assetsDir = path.join(distDir, 'assets');
-  let scriptTags = '';
-  let styleTags = '';
+// 4. Ensure _headers file exists for security & optimal caching
+const headersPath = path.join(distDir, '_headers');
+const headersContent = `/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+`;
+fs.writeFileSync(headersPath, headersContent, 'utf8');
+console.log('✓ Created dist/_headers');
 
-  if (fs.existsSync(assetsDir)) {
-    const files = fs.readdirSync(assetsDir);
-    const cssFiles = files.filter(f => f.endsWith('.css'));
-    const jsFiles = files.filter(f => f.endsWith('.js'));
+// 5. Discover project routes
+const routes = ['/', '/about', '/contact', '/experience', '/projects', '/resume', '/skills'];
 
-    for (const css of cssFiles) {
-      styleTags += `    <link rel="stylesheet" href="/assets/${css}">\n`;
+// Dynamically discover project slugs from src/data/portfolio.ts
+const portfolioFile = path.join(rootDir, 'src', 'data', 'portfolio.ts');
+if (fs.existsSync(portfolioFile)) {
+  const content = fs.readFileSync(portfolioFile, 'utf8');
+  const slugMatches = content.matchAll(/slug:\s*["']([^"']+)["']/g);
+  for (const match of slugMatches) {
+    const slug = match[1];
+    const projectRoute = `/projects/${slug}`;
+    if (!routes.includes(projectRoute)) {
+      routes.push(projectRoute);
     }
-    // Main client entry in TanStack Start typically has client or app or index
-    const clientEntry = jsFiles.find(f => f.includes('client') || f.includes('main') || f.includes('app')) || jsFiles[0];
-    if (clientEntry) {
-      scriptTags += `    <script type="module" src="/assets/${clientEntry}"></script>\n`;
+  }
+}
+
+// 6. Prerender all routes by starting the built Nitro server and capturing full SSR HTML
+async function prerenderRoutes() {
+  if (!fs.existsSync(serverEntry)) {
+    console.warn('⚠️ Server entry not found at .output/server/index.mjs; skipping SSR prerender.');
+    return;
+  }
+
+  const port = process.env.PRERENDER_PORT || 4173;
+  const baseUrl = `http://127.0.0.1:${port}`;
+
+  console.log(`Starting Nitro server on port ${port} for static prerendering...`);
+  const server = spawn(process.execPath, [serverEntry], {
+    env: {
+      ...process.env,
+      PORT: String(port),
+      HOST: '127.0.0.1',
+      NODE_ENV: 'production',
+    },
+    stdio: 'pipe',
+  });
+
+  // Wait for server to start responding
+  let ready = false;
+  for (let i = 0; i < 40; i++) {
+    await new Promise((r) => setTimeout(r, 250));
+    try {
+      const res = await fetch(`${baseUrl}/`);
+      if (res.status === 200) {
+        ready = true;
+        break;
+      }
+    } catch {
+      // Server not ready yet, continue polling
     }
   }
 
-  const htmlContent = `<!DOCTYPE html>
-<html lang="en" class="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mitchel Ndinda Martin — Software Developer</title>
-    <meta name="description" content="Portfolio of Mitchel Ndinda Martin, Full-Stack Software Developer based in Nairobi, Kenya." />
-    <link rel="icon" href="/favicon.ico" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
-${styleTags}  </head>
-  <body class="bg-[#080e1b] text-slate-100 min-h-screen">
-    <div id="root"></div>
-${scriptTags}  </body>
-</html>`;
+  if (!ready) {
+    console.warn('⚠️ Nitro server did not respond in time; skipping static prerendering.');
+    server.kill();
+    return;
+  }
 
-  fs.writeFileSync(indexPath, htmlContent, 'utf8');
-  console.log('✓ Generated dist/index.html');
+  console.log('✓ Nitro server is ready. Prerendering routes...');
+
+  for (const route of routes) {
+    try {
+      const res = await fetch(`${baseUrl}${route}`);
+      if (res.ok) {
+        const html = await res.text();
+        if (route === '/') {
+          fs.writeFileSync(path.join(distDir, 'index.html'), html, 'utf8');
+        } else {
+          const relPath = route.replace(/^\//, '');
+          const routeDir = path.join(distDir, relPath);
+          fs.mkdirSync(routeDir, { recursive: true });
+          fs.writeFileSync(path.join(routeDir, 'index.html'), html, 'utf8');
+          fs.writeFileSync(path.join(distDir, `${relPath}.html`), html, 'utf8');
+        }
+        console.log(`  ✓ Prerendered ${route} (${html.length} bytes)`);
+      } else {
+        console.warn(`  ⚠️ Failed to prerender ${route}: HTTP ${res.status}`);
+      }
+    } catch (err) {
+      console.warn(`  ⚠️ Error fetching ${route}:`, err.message);
+    }
+  }
+
+  // Prerender 404 page
+  try {
+    const notFoundRes = await fetch(`${baseUrl}/404-not-found`);
+    const notFoundHtml = await notFoundRes.text();
+    fs.writeFileSync(path.join(distDir, '404.html'), notFoundHtml, 'utf8');
+    console.log('  ✓ Prerendered 404.html');
+  } catch (err) {
+    console.warn('  ⚠️ Could not prerender 404.html:', err.message);
+  }
+
+  // Gracefully stop the server
+  server.kill('SIGTERM');
+  console.log('✓ Prerendering complete. Nitro server stopped.');
 }
 
-console.log('✓ Render dist preparation complete!');
+try {
+  await prerenderRoutes();
+} catch (err) {
+  console.error('Error during prerendering:', err);
+  process.exitCode = 1;
+}
+
