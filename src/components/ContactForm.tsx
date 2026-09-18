@@ -262,8 +262,8 @@ Sent via Portfolio Contact Form`;
             <p className="mt-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">
               GitHub Repositories
             </p>
-            <span className="mt-1 block font-mono text-sm font-semibold text-foreground group-hover:text-primary">
-              github.com/{githubSocial?.handle || "mitchel"}
+            <span className="mt-1 block font-mono text-sm font-semibold text-foreground group-hover:text-primary truncate">
+              {(githubSocial?.url || profile.github).replace(/^https?:\/\//, "")}
             </span>
           </a>
 
@@ -285,8 +285,8 @@ Sent via Portfolio Contact Form`;
             <p className="mt-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">
               LinkedIn Network
             </p>
-            <span className="mt-1 block font-mono text-sm font-semibold text-foreground group-hover:text-primary">
-              linkedin.com/in/mitchel-martin
+            <span className="mt-1 block font-mono text-sm font-semibold text-foreground group-hover:text-primary truncate">
+              {(linkedinSocial?.url || profile.linkedin).replace(/^https?:\/\/(www\.)?/, "")}
             </span>
           </a>
         </div>

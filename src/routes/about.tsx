@@ -61,24 +61,24 @@ function AboutPage() {
                   {profile.phoneFormatted || profile.phone}
                 </a>
               </Fact>
-              <Fact icon={<GithubIcon className="size-4" />} label="GitHub">
+              <Fact icon={<GithubIcon className="size-4 shrink-0" />} label="GitHub">
                 <a
-                  className="text-primary hover:underline font-mono"
+                  className="text-primary hover:underline font-mono break-all"
                   href={profile.github}
                   target="_blank"
                   rel="noreferrer noopener"
                 >
-                  github.com/mitchel
+                  {profile.github.replace(/^https?:\/\//, "")}
                 </a>
               </Fact>
-              <Fact icon={<LinkedinIcon className="size-4" />} label="LinkedIn">
+              <Fact icon={<LinkedinIcon className="size-4 shrink-0" />} label="LinkedIn">
                 <a
-                  className="text-primary hover:underline font-mono"
+                  className="text-primary hover:underline font-mono break-all"
                   href={profile.linkedin}
                   target="_blank"
                   rel="noreferrer noopener"
                 >
-                  linkedin/mitchel-martin
+                  {profile.linkedin.replace(/^https?:\/\//, "")}
                 </a>
               </Fact>
             </dl>

@@ -783,7 +783,7 @@ Contact information:
 [mitchndinda@gmail.com](mailto:mitchndinda@gmail.com)
 
 **Phone**
-0741 453 093
+0785 091 595
 
 **Location**
 Nairobi, Kenya
@@ -1048,11 +1048,13 @@ Do not load a library simply because it looks impressive.
 Add proper:
 
 ```text
-@gmail.com](mailto:mitchndinda@gmail.com)**
+Email:
+
+**[mitchndinda@gmail.com](mailto:mitchndinda@gmail.com)**
 
 Phone:
 
-**0741 453 093**
+**0785 091 595**
 
 Education:
 
@@ -1320,7 +1322,7 @@ The final result should look like a **real software developer's professional por
 To run this project locally:
 
 ```sh
-git clone https://github.com/mitchel/digital-artifact-lab.git
+git clone https://github.com/mitchndinda-code/digital-artifact-lab.git
 cd digital-artifact-lab
 npm install
 npm run dev

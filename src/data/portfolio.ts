@@ -12,12 +12,12 @@ export const profile = {
   shortRole: "Software Developer",
   location: "Nairobi, Kenya",
   email: "mitchndinda@gmail.com",
-  phone: "0741 453 093",
-  phoneFormatted: "+254 741 453 093",
-  phoneHref: "+254741453093",
-  whatsappHref: "https://wa.me/254741453093",
-  github: "https://github.com/mitchel",
-  linkedin: "https://www.linkedin.com/in/mitchel-martin",
+  phone: "0785 091 595",
+  phoneFormatted: "+254 785 091 595",
+  phoneHref: "+254785091595",
+  whatsappHref: "https://wa.me/254785091595",
+  github: "https://github.com/mitchndinda-code",
+  linkedin: "https://www.linkedin.com/in/mitchel-martin-42503a438",
   availability: "Available for freelance projects & full-time roles",
   education: {
     school: "Jomo Kenyatta University of Agriculture and Technology (JKUAT)",
@@ -32,8 +32,8 @@ export const profile = {
 
 /** Set these to your real profile URLs. `null` hides the link everywhere. */
 export const socials: { label: string; url: string; handle?: string }[] = [
-  { label: "GitHub", url: "https://github.com/mitchel", handle: "mitchel" },
-  { label: "LinkedIn", url: "https://www.linkedin.com/in/mitchel-martin", handle: "Mitchel Martin" },
+  { label: "GitHub", url: "https://github.com/mitchndinda-code", handle: "mitchndinda-code" },
+  { label: "LinkedIn", url: "https://www.linkedin.com/in/mitchel-martin-42503a438", handle: "mitchel-martin-42503a438" },
 ];
 
 export const about = {

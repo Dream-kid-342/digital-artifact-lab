@@ -79,8 +79,8 @@ function ResumePage() {
               rel="noreferrer noopener"
               className="flex items-center gap-2 rounded-lg border border-border/70 bg-card/50 p-3 text-xs text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
             >
-              <GithubIcon className="size-3.5 text-primary" />
-              <span>github.com/mitchel</span>
+              <GithubIcon className="size-3.5 text-primary shrink-0" />
+              <span className="truncate">{profile.github.replace(/^https?:\/\//, "")}</span>
             </a>
             <a
               href={profile.linkedin}
@@ -88,8 +88,8 @@ function ResumePage() {
               rel="noreferrer noopener"
               className="flex items-center gap-2 rounded-lg border border-border/70 bg-card/50 p-3 text-xs text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
             >
-              <LinkedinIcon className="size-3.5 text-primary" />
-              <span>linkedin/mitchel-martin</span>
+              <LinkedinIcon className="size-3.5 text-primary shrink-0" />
+              <span className="truncate">{profile.linkedin.replace(/^https?:\/\/(www\.)?/, "")}</span>
             </a>
           </div>
 
